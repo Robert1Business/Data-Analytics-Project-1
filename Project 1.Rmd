@@ -1,0 +1,315 @@
+---
+author: "Robert Whiting"
+date: "01/03/2021"
+output: html_document
+---
+
+```{r}
+A_level_data <- read_excel("A_level_data.xlsx")
+View(A_level_data)
+```
+
+```{r}
+# Tabulating Data
+
+#Highest chosen subject in 2020- Mathematics - 87164
+max(A_level_data$Number2020)                                              
+
+#Highest chosen subject in 2019- Mathematics - 84965
+max(A_level_data$Number2019)                                              
+
+#Top 6 Participated Subjects in 2019 - Due to the multiple subjects; 
+#This would allow the largest data sets to be used to provided stronger foundations for arguments 
+A_level_data[A_level_data$Number2019 %in% tail(sort(A_level_data$Number2019),6),]    
+
+#Taking the top 6 Participants in subjects through 2019 and arranging in a separate table
+A_level_data_Refined <- read_excel("A_level_data - Refined.xlsx")
+View(A_level_data_Refined)
+
+#Containing the 2019 Portion of Data
+A_level_data_Refined_2019 <- read_excel("A_level_data - Refined - 2019.xlsx")
+View(A_level_data_Refined_2019)
+
+#Containing the 2020 Portion of Data
+A_level_data_Refined_2020 <- read_excel("A_level_data - Refined - 2020.xlsx")
+View(A_level_data_Refined_2020)
+
+#Function that's designed to compare two grades from each year for user choice 
+# Example Could be Astar Grade
+# Function_name1 <- Function(A_level_data$columnbetween 2020-2019)          
+# Function_name2 <- Function(A_level_data$columnbetween 2020-2019)          
+# names(Function_name1)<- A_level_data$subjects
+# names(Function_name2)<- A_level_data$subjects
+# Function_name<- cbind(Function_name1,Function_name2 )
+# barplot(t(Function_name),beside=TRUE,col = c("red","blue"))
+# title(main="-----------")
+```
+
+```{r}
+# Codes for producing graphs
+
+par(mfrow = c(2,2), mar = c(3, 3, 2, 1)) #Plotting Matrix
+
+Subjects_2020 <- A_level_data_Refined_2020$Subjects[1:6] 
+A_level_data_Refined_2020$Number2020 <- sort(x = sample(x = 35000L:90000L,
+                               size = 6,
+                               replace = TRUE),
+                    decreasing = TRUE) #Places the subject participants in order from high to low
+
+Subjects_2020_mod <- c(Subjects_2020[1:6])
+A_Level_2020_Participant_mod <- c(A_level_data_Refined_2020$Number2020[1:6])
+
+pie(x = A_Level_2020_Participant_mod,
+    labels = Subjects_2020_mod,
+    col = rainbow(n = 6), main = "Refinded A-levels Number of Participants for 2020")
+
+Subjects_2019 <- A_level_data_Refined_2019$Subjects[1:6]
+A_level_data_Refined_2019$Number2019 <- sort(x = sample(x = 35000L:90000L,
+                                                        size = 6,
+                                                        replace = TRUE),
+                                             decreasing = TRUE)
+
+Subjects_2019_mod <- c(Subjects_2019[1:6])
+A_Level_2019_Participant_mod <- c(A_level_data_Refined_2019$Number2019[1:6])
+
+pie(x = A_Level_2019_Participant_mod,
+    labels = Subjects_2019_mod,
+    col = rainbow(n = 6), main = "Refinded A-levels Number of Participants for 2019")
+```
+
+```{r}
+summary(A_level_data_Refined_2020) # Provide Information about each respective grade
+
+TestAstar2020 <-c(A_level_data_Refined$Astar2020) # Assigns all A-Stars achieved to a variable
+TestA2020 <-c(A_level_data_Refined$A2020)
+TestB2020 <-c(A_level_data_Refined$B2020)
+TestC2020 <-c(A_level_data_Refined$C2020)
+TestD2020 <-c(A_level_data_Refined$D2020)
+TestE2020 <-c(A_level_data_Refined$E20202)
+TestU2020 <-c(A_level_data_Refined$U2020)
+names(TestAstar2020)<- (A_level_data_Refined$Subjects) #Apply the subject names accordingly
+names(TestA2020)<- (A_level_data_Refined$Subjects)
+names(TestB2020)<- (A_level_data_Refined$Subjects)
+names(TestC2020)<- (A_level_data_Refined$Subjects)
+names(TestD2020)<- (A_level_data_Refined$Subjects)
+names(TestE2020)<- (A_level_data_Refined$Subjects)
+names(TestU2020)<- (A_level_data_Refined$Subjects)
+#Shows them all collectively together
+TestALL2020 <- cbind(TestAstar2020, TestA2020, TestB2020, TestC2020, TestD2020, TestE2020, TestU2020) 
+barplot(t(TestALL2020),beside=TRUE, col = c("red", "orange", "green", "cyan", "blue", "magenta", "pink"), 
+        ylim = c(0,25000))
+title(main="A* - U Grade Aquired by the 2020 A-Level Participants",
+      xlab="Subjects",ylab="A-Level Participants")
+legend("topright", legend = c("A Star", "A", "B", "C", "D", "E", "U"),
+       fill = c("red", "orange", "green", "cyan", "blue", "magenta", "pink"))
+
+install.packages("moments")
+library(moments)
+skewness(TestALL2020)
+kurtosis(TestALL2020)
+
+# Does the same as previously but instead does it for the 2019 interval
+TestAstar2019 <-c(A_level_data_Refined$Astar2019)
+TestA2019 <-c(A_level_data_Refined$A2019)
+TestB2019 <-c(A_level_data_Refined$B2019)
+TestC2019 <-c(A_level_data_Refined$C2019)
+TestD2019 <-c(A_level_data_Refined$D2019)
+TestE2019 <-c(A_level_data_Refined$E2019)
+TestU2019 <-c(A_level_data_Refined$U2019)
+names(TestAstar2019)<- (A_level_data_Refined$Subjects)
+names(TestA2019)<- (A_level_data_Refined$Subjects)
+names(TestB2019)<- (A_level_data_Refined$Subjects)
+names(TestC2019)<- (A_level_data_Refined$Subjects)
+names(TestD2019)<- (A_level_data_Refined$Subjects)
+names(TestE2019)<- (A_level_data_Refined$Subjects)
+names(TestU2019)<- (A_level_data_Refined$Subjects)
+TestALL2019 <- cbind(TestAstar2019, TestA2019, TestB2019, TestC2019, TestD2019, TestE2019, TestU2019)
+barplot(t(TestALL2019),beside=TRUE, col = c("red", "orange", "green", "cyan", "blue", "magenta", "pink"), 
+        ylim = c(0,25000))
+title(main="A* - U Grade Aquired by the 2019 A-Level Participants",
+      xlab="Subjects",ylab="A-Level Participants")
+legend("topright", legend = c("A Star", "A", "B", "C", "D", "E", "U"),
+       fill = c("red", "orange", "green", "cyan", "blue", "magenta", "pink"))
+
+summary(A_level_data_Refined_2019)
+
+install.packages("moments")
+library(moments)
+skewness(TestALL2019)
+kurtosis(TestALL2019)
+```
+
+```{r}
+# Takes the refined data and plots the selected grade with comparisons from both years respectively 
+subjects1 <-c(A_level_data_Refined$Astar2020)
+subjects2 <-c(A_level_data_Refined$Astar2019)
+names(subjects1)<- (A_level_data_Refined$Subjects)
+names(subjects2)<- (A_level_data_Refined$Subjects)
+Subject <- cbind(subjects1, subjects2)
+barplot(t(Subject),beside=TRUE,col = c("red","blue"), ylim = c(0,25000))
+# barplot(t(Subject), col=c("red","blue"), ylim = c(0,45000)) # If another perspective was needed
+title(main="2019 & 2020 AStar Comparison",xlab="Subjects",ylab="A-Level Participants")
+legend("topright", legend = c("2020", "2019"),fill = c("red", "blue"))
+
+# Process is repeated for each grade
+subjects3 <-c(A_level_data_Refined$A2020)
+subjects4 <-c(A_level_data_Refined$A2019)
+names(subjects3)<- (A_level_data_Refined$Subjects)
+names(subjects4)<- (A_level_data_Refined$Subjects)
+Subject5 <- cbind(subjects3, subjects4)
+barplot(t(Subject5),beside=TRUE,col = c("red","blue"), ylim = c(0,25000))
+# barplot(t(Subject5), col=c("red","blue"), ylim = c(0,45000))
+title(main="2019 & 2020 A Grade Comparison",xlab="Subjects",ylab="A-Level Participants")
+legend("topright", legend = c("2020", "2019"),fill = c("red", "blue"))
+
+
+subjects6 <-c(A_level_data_Refined$B2020)
+subjects7 <-c(A_level_data_Refined$B2019)
+names(subjects6)<- (A_level_data_Refined$Subjects)
+names(subjects7)<- (A_level_data_Refined$Subjects)
+Subject8 <- cbind(subjects6, subjects7)
+barplot(t(Subject8),beside=TRUE,col = c("red","blue"), ylim = c(0,25000))
+# barplot(t(Subject8), col=c("red","blue"), ylim = c(0,45000))
+title(main="2019 & 2020 B Grade Comparison",xlab="Subjects",ylab="A-Level Participants")
+legend("topright", legend = c("2020", "2019"),fill = c("red", "blue"))
+
+
+subjects9 <-c(A_level_data_Refined$C2020)
+subjects10 <-c(A_level_data_Refined$C2019)
+names(subjects9)<- (A_level_data_Refined$Subjects)
+names(subjects10)<- (A_level_data_Refined$Subjects)
+Subject11 <- cbind(subjects9, subjects10)
+barplot(t(Subject11),beside=TRUE,col = c("red","blue"), ylim = c(0,25000))
+# barplot(t(Subject11), col=c("red","blue"), ylim = c(0,45000))
+title(main="2019 & 2020 C Grade Comparison",xlab="Subjects",ylab="A-Level Participants")
+legend("topright", legend = c("2020", "2019"),fill = c("red", "blue"))
+
+
+subjects12 <-c(A_level_data_Refined$D2020)
+subjects13 <-c(A_level_data_Refined$D2019)
+names(subjects12)<- (A_level_data_Refined$Subjects)
+names(subjects13)<- (A_level_data_Refined$Subjects)
+Subject14 <- cbind(subjects12, subjects13)
+barplot(t(Subject14),beside=TRUE,col = c("red","blue"), ylim = c(0,25000))
+# barplot(t(Subject14), col=c("red","blue"), ylim = c(0,45000))
+title(main="2019 & 2020 D Grade Comparison",xlab="Subjects",ylab="A-Level Participants")
+legend("topright", legend = c("2020", "2019"),fill = c("red", "blue"))
+
+
+subjects15 <-c(A_level_data_Refined$E20202)
+subjects16 <-c(A_level_data_Refined$E2019)
+names(subjects15)<- (A_level_data_Refined$Subjects)
+names(subjects16)<- (A_level_data_Refined$Subjects)
+Subject17 <- cbind(subjects15, subjects16)
+barplot(t(Subject17),beside=TRUE,col = c("red","blue"), ylim = c(0,25000))
+# barplot(t(Subject17), col=c("red","blue"), ylim = c(0,45000))
+title(main="2019 & 2020 E Grade Comparison",xlab="Subjects",ylab="A-Level Participants")
+legend("topright", legend = c("2020", "2019"),fill = c("red", "blue"))
+
+
+subjects18 <-c(A_level_data_Refined$U2020)
+subjects19 <-c(A_level_data_Refined$U2019)
+names(subjects18)<- (A_level_data_Refined$Subjects)
+names(subjects19)<- (A_level_data_Refined$Subjects)
+Subject20 <- cbind(subjects18, subjects19)
+barplot(t(Subject20),beside=TRUE,col = c("red","blue"), ylim = c(0,25000))
+# barplot(t(Subject20), col=c("red","blue"), ylim = c(0,45000))
+title(main="2019 & 2020 U Grade Comparison",xlab="Subjects",ylab="A-Level Participants")
+legend("topright", legend = c("2020", "2019"),fill = c("red", "blue"))
+```
+
+```{r}
+# Additional Aquired Data - Welsh
+A_level_entries_and_results_pupils_aged_17_only_by_subject_group_Welsh_data <- read_excel("A level entries and results (pupils aged 17 only) 
+                                                                                          by subject group - Welsh data.xlsx")
+View(A_level_entries_and_results_pupils_aged_17_only_by_subject_group_Welsh_data)
+
+TestWelshAstar2020 <-c(A_level_entries_and_results_pupils_aged_17_only_by_subject_group_Welsh_data$`Percentage achieving an A* (3)`) # Assigns all A-Stars achieved to a variable
+TestWelshA2020 <-c(A_level_entries_and_results_pupils_aged_17_only_by_subject_group_Welsh_data$`Percentage achieving an A (4)`)
+TestWelshB2020 <-c(A_level_entries_and_results_pupils_aged_17_only_by_subject_group_Welsh_data$`Percentage achieving a B (5)`)
+TestWelshC2020 <-c(A_level_entries_and_results_pupils_aged_17_only_by_subject_group_Welsh_data$`Percentage achieving a C (6)`)
+TestWelshD2020 <-c(A_level_entries_and_results_pupils_aged_17_only_by_subject_group_Welsh_data$`Percentage achieving a D (7)`)
+TestWelshE2020 <-c(A_level_entries_and_results_pupils_aged_17_only_by_subject_group_Welsh_data$`Percentage achieving an E (8)`)
+names(TestWelshAstar2020)<- (A_level_entries_and_results_pupils_aged_17_only_by_subject_group_Welsh_data$Subject) #Apply the subject names accordingly
+names(TestWelshA2020)<- (A_level_entries_and_results_pupils_aged_17_only_by_subject_group_Welsh_data$Subject)
+names(TestWelshB2020)<- (A_level_entries_and_results_pupils_aged_17_only_by_subject_group_Welsh_data$Subject)
+names(TestWelshC2020)<- (A_level_entries_and_results_pupils_aged_17_only_by_subject_group_Welsh_data$Subject)
+names(TestWelshD2020)<- (A_level_entries_and_results_pupils_aged_17_only_by_subject_group_Welsh_data$Subject)
+names(TestWelshE2020)<- (A_level_entries_and_results_pupils_aged_17_only_by_subject_group_Welsh_data$Subject)
+
+#Shows them all collectively together
+TestALLWelsh2020 <- cbind(TestWelshAstar2020, TestWelshA2020, TestWelshB2020, TestWelshC2020, TestWelshD2020, TestWelshE2020) 
+barplot(t(TestALLWelsh2020),beside=TRUE, col = c("red", "orange", "green", "cyan", "blue", "magenta"), 
+        ylim = c(0,100))
+title(main="Welsh A level entries and results (pupils aged 17 only) by subject group
+      for 2019/2020",
+      xlab="Subjects with corresponding Grade ",ylab="A-Level Participants Percentages")
+legend("topright", legend = c("A Star", "A", "B", "C", "D", "E"),
+       fill = c("red", "orange", "green", "cyan", "blue", "magenta", "pink"))
+
+A_level_entries_and_results_pupils_aged_17_only_by_subject_group_20182019_Welsh_Data <- read_excel("A level entries and results (pupils aged 17 only) by subject group - 20182019 Welsh Data.xlsx")
+View(A_level_entries_and_results_pupils_aged_17_only_by_subject_group_20182019_Welsh_Data)
+
+
+TestWelshAstar2019 <-c(A_level_entries_and_results_pupils_aged_17_only_by_subject_group_20182019_Welsh_Data$`Percentage achieving an A* (3)`) # Assigns all A-Stars achieved to a variable
+TestWelshA2019 <-c(A_level_entries_and_results_pupils_aged_17_only_by_subject_group_20182019_Welsh_Data$`Percentage achieving an A (4)`)
+TestWelshB2019 <-c(A_level_entries_and_results_pupils_aged_17_only_by_subject_group_20182019_Welsh_Data$`Percentage achieving a B (5)`)
+TestWelshC2019 <-c(A_level_entries_and_results_pupils_aged_17_only_by_subject_group_20182019_Welsh_Data$`Percentage achieving a C (6)`)
+TestWelshD2019 <-c(A_level_entries_and_results_pupils_aged_17_only_by_subject_group_20182019_Welsh_Data$`Percentage achieving a D (7)`)
+TestWelshE2019 <-c(A_level_entries_and_results_pupils_aged_17_only_by_subject_group_20182019_Welsh_Data$`Percentage achieving an E (8)`)
+names(TestWelshAstar2019)<- (A_level_entries_and_results_pupils_aged_17_only_by_subject_group_20182019_Welsh_Data$Subject) #Apply the subject names accordingly
+names(TestWelshA2019)<- (A_level_entries_and_results_pupils_aged_17_only_by_subject_group_20182019_Welsh_Data$Subject)
+names(TestWelshB2019)<- (A_level_entries_and_results_pupils_aged_17_only_by_subject_group_20182019_Welsh_Data$Subject)
+names(TestWelshC2019)<- (A_level_entries_and_results_pupils_aged_17_only_by_subject_group_20182019_Welsh_Data$Subject)
+names(TestWelshD2019)<- (A_level_entries_and_results_pupils_aged_17_only_by_subject_group_20182019_Welsh_Data$Subject)
+names(TestWelshE2019)<- (A_level_entries_and_results_pupils_aged_17_only_by_subject_group_20182019_Welsh_Data$Subject)
+
+#Shows them all collectively together
+TestALLWelsh2019 <- cbind(TestWelshAstar2019, TestWelshA2019, TestWelshB2019, TestWelshC2019, TestWelshD2019, TestWelshE2019) 
+barplot(t(TestALLWelsh2019),beside=TRUE, col = c("red", "orange", "green", "cyan", "blue", "magenta"), 
+        ylim = c(0,100))
+title(main="Welsh A level entries and results (pupils aged 17 only) by subject group
+      for 2018/2019",
+      xlab="Subjects with corresponding Grade ",ylab="A-Level Participants Percentages")
+legend("topright", legend = c("A Star", "A", "B", "C", "D", "E"),
+       fill = c("red", "orange", "green", "cyan", "blue", "magenta", "pink"))
+
+# Takes the refined data and plots the selected grade with comparisons from both years respectively 
+Welshsubjects1 <-c(A_level_entries_and_results_pupils_aged_17_only_by_subject_group_Welsh_data$`Percentage achieving an A* (3)`)
+Welshsubjects2 <-c(A_level_entries_and_results_pupils_aged_17_only_by_subject_group_20182019_Welsh_Data$`Percentage achieving an A* (3)`)
+names(Welshsubjects1)<- (A_level_entries_and_results_pupils_aged_17_only_by_subject_group_Welsh_data$Subject)
+names(Welshsubjects2)<- (A_level_entries_and_results_pupils_aged_17_only_by_subject_group_20182019_Welsh_Data$Subject)
+WelshSubject <- cbind(Welshsubjects1, Welshsubjects2)
+barplot(t(WelshSubject),beside=TRUE,col = c("red","blue"), ylim = c(0,100))
+# barplot(t(Subject), col=c("red","blue"), ylim = c(0,100)) # If another perspective was needed
+title(main="2018/2019 - 2019/2020 A-star Comparison",xlab="Subjects with corresponding Grade ",ylab="A-Level Participants Percentages")
+legend("topright", legend = c("2019-2020", "2018-2019"),fill = c("red", "blue"))
+
+Welshsubjects3 <-c(A_level_entries_and_results_pupils_aged_17_only_by_subject_group_Welsh_data$`Percentage achieving an A (4)`)
+Welshsubjects4 <-c(A_level_entries_and_results_pupils_aged_17_only_by_subject_group_20182019_Welsh_Data$`Percentage achieving an A (4)`)
+names(Welshsubjects3)<- (A_level_entries_and_results_pupils_aged_17_only_by_subject_group_Welsh_data$Subject)
+names(Welshsubjects4)<- (A_level_entries_and_results_pupils_aged_17_only_by_subject_group_20182019_Welsh_Data$Subject)
+WelshSubject5 <- cbind(Welshsubjects3, Welshsubjects4)
+barplot(t(WelshSubject),beside=TRUE,col = c("red","blue"), ylim = c(0,100))
+# barplot(t(Subject), col=c("red","blue"), ylim = c(0,100)) # If another perspective was needed
+title(main="2018/2019 - 2019/2020 A Comparison",xlab="Subjects with corresponding Grade ",ylab="A-Level Participants Percentages")
+legend("topright", legend = c("2019-2020", "2018-2019"),fill = c("red", "blue"))
+
+# Conducting a Hypothesis Test
+# Testing for differences between means (independent samples)
+A_level_data_Refined <- read_excel("A_level_data - Refined.xlsx")
+View(A_level_data_Refined)
+data(A_level_data_Refined)
+attach(A_level_data_Refined)
+t.test(A_level_data_Refined$Astar2020,A_level_data_Refined$Astar2019,paired=TRUE)
+# Hence we can conclude that there is strong evidence to reject the null hypothesis of no change in A-level 
+# results and conclude that there has been a significant increase in the amount of Astars from 2019-2020
+t.test(A_level_data_Refined$B2020,A_level_data_Refined$B2019,paired=TRUE)
+#Supports the previous Test 
+
+t.test(A_level_entries_and_results_pupils_aged_17_only_by_subject_group_Welsh_data$`Percentage achieving an A* (3)`
+       ,A_level_entries_and_results_pupils_aged_17_only_by_subject_group_20182019_Welsh_Data$`Percentage achieving an A* (3)`,paired=TRUE)
+t.test(A_level_entries_and_results_pupils_aged_17_only_by_subject_group_Welsh_data$`Percentage achieving a B (5)`
+       ,A_level_entries_and_results_pupils_aged_17_only_by_subject_group_20182019_Welsh_Data$`Percentage achieving a B (5)`,paired = TRUE)
+```
+
