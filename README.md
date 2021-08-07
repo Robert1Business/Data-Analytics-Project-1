@@ -1,6 +1,6 @@
 # Data-Analytics-Project-1
 
-Within this assessment you will investigate data relating to A-level results for the 2020 and 2019 exam periods.
+Investigating data relating to A-level results for the 2020 and 2019 exam periods.
 
 The pass grades for A Levels are, from highest to lowest, A*, A, B, C, D and E. Those who do not reach the minimum standard required for a grade E receive the non-grade U (unclassified).
 
